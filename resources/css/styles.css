@@ -1,0 +1,50 @@
+body {
+    background-color:rgb(255, 255, 255) ;
+    font-family: 'Jura', sans-serif;
+    /*font-family: 'Reggae One', cursive;*/
+
+}
+
+nav.navbar {
+    font-size: 1.4em;
+    background-color:rgba(3, 158, 248, 0.85) ;
+    color:whitesmoke;
+} 
+
+.navbar-light .nav-item .nav-link {
+    color:whitesmoke;
+}
+
+.navbar-light .navbar-brand {
+    color:greenyellow;
+    font-size: 2.0rem;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+nav.navbar {    
+    background-image: linear-gradient(180deg, rgb(33, 200, 246), rgb(99, 123, 255));
+}
+
+.patientForm {
+    padding: 1rem;
+    border-radius: .3rem;
+    background-image: linear-gradient(180deg, rgb(110, 220, 196), rgb(26, 171, 139));
+    /*background-image: linear-gradient(180deg, rgb(244, 72, 129), rgb(236, 69, 79));*/
+}
+.btn-primary, .page-link {
+    background-image: linear-gradient(180deg, rgb(33, 200, 246), rgb(99, 123, 255));
+
+}
+.btn-success{
+    background-image: linear-gradient(180deg, rgb(110, 220, 196), rgb(26, 171, 139));
+}
+.page-link {
+    color:white;
+}
+.page-item.active .page-link {
+    background-image: white;
+}
+/*.allergenGroup{
+    //background-image: linear-gradient(180deg, rgb(33, 200, 246), rgb(99, 123, 255));
+    //border-radius: 1rem;
+    background-color: rgb(49, 49, 47); 
+}*/  
