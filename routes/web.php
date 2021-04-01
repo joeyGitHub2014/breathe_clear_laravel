@@ -27,7 +27,7 @@ Route::middleware([Authenticate::class])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 
 
-    // Patient Routes
+    // Patient Routes  
     Route::get('/patient/index', [App\Http\Controllers\PatientController::class, 'index'])->name('listPatients');
     Route::get('/patient/add', [App\Http\Controllers\PatientController::class, 'create'])->name('addPatient');
     Route::post('/patient/store', [App\Http\Controllers\PatientController::class, 'store']);
