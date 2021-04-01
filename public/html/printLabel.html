@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, height=device-height">
+	<link href="../css/app.css" rel="stylesheet" type="text/css" />
+	<link href="../css/printLabel.css" rel="stylesheet" type="text/css" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+
+<body style="max-width: 100%; max-height: 100%;" />
+<div id="container">
+	<div style="background:lightblue" id="canvas">
+		<div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+		</div>
+		<div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+		</div>
+		<div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+		</div>
+		<div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+		</div>
+		<div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+		</div>
+		<div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+		</div>
+		<div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+			<div class="cell"></div>
+		</div>
+
+		<div class="label" id="label0">
+			<div class="yellow ingredants"></div>
+			<div class="yellow rotatedText name"> </div>
+			<div class="yellow rotatedText dob"> </div>
+			<div class="yellow rotatedText lotNum"> </div>
+			<div class="yellow exp">EXP: </div>
+			<div class="yellow  dl"></div>
+		</div>
+
+		<div class="label" id="label1">
+			<div class="green ingredants"></div>
+			<div class="green rotatedText name"> </div>
+			<div class="green rotatedText dob"> </div>
+			<div class="green rotatedText lotNum"> </div>
+			<div class="green exp">EXP: </div>
+			<div class="green dl"></div>
+		</div>
+
+		<div class="label" id="label2">
+			<div class="red ingredants"></div>
+			<div class="red rotatedText name"> </div>
+			<div class="red rotatedText dob"> </div>
+			<div class="red rotatedText lotNum"> </div>
+			<div class="red exp">EXP: </div>
+			<div class="red dl"></div>
+		</div>
+
+		<div class="label" id="label3">
+			<div class="ingredants"></div>
+			<div class="rotatedText name"> </div>
+			<div class="rotatedText dob"> </div>
+			<div class="rotatedText lotNum"> </div>
+			<div class="exp">EXP: </div>
+			<div class="dl"></div>
+		</div>
+
+	</div>
+
+</div>
+<button class="prtBtn" onclick="window.print(); return false;">
+	<b>PRINT</b>
+</button>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenLite.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/plugins/CSSPlugin.min.js"></script>
+<script src="../js/app.js"></script>
+
+<script>
+	window.onload = function () {
+		getLabel();
+	}
+
+	function getLabel() {
+		$.getJSON("../js/label.json", {
+			format: "json"
+		})
+			.done(function (data) {
+				if (data.treatment == 0 || data.treatment == 1) {
+					$('.ingredants').append(data.ingredients);
+					$('.label').attr("style", "background : url('../images/AllergyDrops411x225.jpg') !important; background-size: 246px 137px !important;");
+					if (data.refill == 0) {
+						$('.yellow').attr("style", "color : yellow !important;");
+						$('.red').attr("style", "color : red !important;");
+						$('.green').attr("style", "color : green !important;");
+					}
+
+				} else {
+					$('.label').attr("style", "background : url('../images/AllergyInjection411x225.jpg') !important; background-size: 246px 137px !important;");
+
+					$('.dl').append(data.dilutionLevel);
+
+					(data.vialA != "") ? $('#label0 .ingredants').append(data.vialA) : $("#label0").css("display", "none");
+
+					(data.vialB != "") ? $('#label1 .ingredants').append(data.vialB) : $("#label1").css("display", "none");
+
+					(data.vialC != "") ? $('#label2 .ingredants').append(data.vialC) : $("#label2").css("display", "none");
+
+					$("#label3").attr("style", "display: none");
+
+				}
+
+				$('.name').append(data.name);
+
+				$('.dob').append(data.dob);
+
+				$('.lotNum').append(data.lotNum);
+
+				$('.exp').append(data.exp);
+
+				//Make the DIV's element draggagle:
+				for (i = 0; i <= 3; i++) {
+
+					dragElement("label" + i);
+
+				}
+
+
+			})
+
+			.fail(function () {
+
+				console.log("Error with JSON file. ");
+
+			});
+
+	};
+
+	function dragElement(elmnt) {
+
+		var offset = 0,
+
+			can = document.getElementById("canvas"),
+
+			gridWidth = 740, gridHeight = 958,
+
+			label = document.getElementById(elmnt),
+
+			pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+		//TweenLite.set(can, {height: gridHeight + 1, width: gridWidth + 1});
+
+		//TweenLite.set(label, { width:246, height:137, lineHeight:137 + "px"});
+
+		label.onmousedown = dragMouseDown;
+
+		function dragMouseDown(e) {
+
+			e = e || window.event;
+
+			pos3 = e.clientX;
+
+			pos4 = e.clientY;
+
+			document.onmouseup = closeDragElement;
+
+			document.onmousemove = elementDrag;
+
+		}
+
+		function elementDrag(e) {
+
+			e = e || window.event;
+
+			// calculate the new cursor position:
+
+			pos1 = pos3 - e.clientX;
+
+			pos2 = pos4 - e.clientY;
+
+			pos3 = e.clientX;
+
+			pos4 = e.clientY;
+
+			// set the element's new position:
+
+			label.style.top = (label.offsetTop - pos2) + "px";
+
+			label.style.left = (label.offsetLeft - pos1) + "px";
+
+		}
+
+		function closeDragElement(e) {
+
+			/* stop moving when mouse button is released:*/
+
+			document.onmouseup = null;
+
+			document.onmousemove = null;
+
+			topPos = label.offsetTop;
+
+			leftPos = label.offsetLeft;
+
+			TweenLite.to(label, 0.2, {
+
+				left: (Math.round(leftPos / 246) * 246) + offset,
+
+				top: (Math.round(topPos / 137) * 137) + offset, ease: Power2.easeInOut
+			});
+
+		}
+
+	}
+</script>
+
+</html>
